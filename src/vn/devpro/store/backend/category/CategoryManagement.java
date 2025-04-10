@@ -1,4 +1,4 @@
-package vn.devprp.backend.category;
+package vn.devpro.store.backend.category;
 import java.util.ArrayList;
 import java.util.Scanner;
 

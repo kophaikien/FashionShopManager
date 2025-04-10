@@ -7,7 +7,7 @@ import vn.devpro.store.backend.product.ProductManagement;
 import vn.devpro.store.backend.SystemInformationManagement;
 import vn.devpro.store.backend.customer.CustomerManagement;
 import vn.devpro.store.frontend.CartManagement;
-import vn.devprp.backend.category.CategoryManagement;
+import vn.devpro.store.backend.category.CategoryManagement;
 
 
 

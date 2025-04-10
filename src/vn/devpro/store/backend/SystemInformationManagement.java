@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 import vn.devpro.store.backend.product.ProductManagement;
 import vn.devpro.store.backend.customer.CustomerManagement;
-import vn.devprp.backend.category.CategoryManagement;
+import vn.devpro.store.backend.category.CategoryManagement;
 
 
 

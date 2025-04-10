@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import vn.devpro.store.backend.product.Product;
-import vn.devprp.backend.category.Category;
+import vn.devpro.store.backend.category.Category;
 
 public class InputException extends RuntimeException {
 

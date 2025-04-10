@@ -1,7 +1,9 @@
 package vn.devpro.store.backend.order;
 
 import java.util.ArrayList;
-
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import vn.devpro.store.backend.product.Product;
@@ -15,7 +17,7 @@ import vn.devpro.store.frontend.CartProduct;
 public class OrderManagement {
 	public static Scanner sc = new Scanner(System.in);
 	public static int autoId = 1;
-	private static ArrayList<Cart> order1 = CartManagement.getOrder(); 
+	private static ArrayList<Cart> order = CartManagement.order; 
 	public static void management() {
 		do {
 
@@ -45,7 +47,7 @@ public class OrderManagement {
 				totalByCus(); 
 				break;
 			case 5:
-//				totalByPro(); 
+				totalByPro(); 
 				break;
 			
 
@@ -68,7 +70,7 @@ public class OrderManagement {
 		
 		int index = findOderByCode(code);
 		if (index == 1) { 
-			order1.remove(index);
+			order.remove(index);
 			System.out.println("Xoa thanh cong don hang " + code);
 		}else { 
 			System.out.println("khong ton tai hoa don nay");
@@ -90,10 +92,10 @@ public class OrderManagement {
 					+ CustomerManagement.getCustomerNameById(CartManagement.getOrder().get(i).getCustomerId()));
 			System.out.println("So dien thoai: "
 					+ CustomerManagement.getCustomerPhoneById(CartManagement.getOrder().get(i).getCustomerId()));
-			System.out.println("CODE: " + order1.get(i).getCode());
+			System.out.println("CODE: " + order.get(i).getCode());
 			System.out.printf("%-30s %8s %15s %15s%n", "Ten san pham", "So luong", "Don gia", "Thanh tien");
 			double totalCartPrice = 0;
-			for (CartProduct cartProduct : order1.get(i).getCartProducts()) {
+			for (CartProduct cartProduct : order.get(i).getCartProducts()) {
 				cartProduct.display();
 				totalCartPrice += cartProduct.totalPrice();
 			}
@@ -101,8 +103,8 @@ public class OrderManagement {
 		}
 	}
 	private static int findOderByCode(String code) { 
-		for (int i = 0; i < order1.size(); i++) { 
-			if (order1.get(i).getCode().trim().equalsIgnoreCase(code.trim())) {
+		for (int i = 0; i < order.size(); i++) { 
+			if (order.get(i).getCode().trim().equalsIgnoreCase(code.trim())) {
 				return i; 
 			}
 		}
@@ -112,7 +114,7 @@ public class OrderManagement {
 		double totalCartPrice = 0;
 		for (int i = 0; i < CartManagement.getOrder().size(); i++) {
 			System.out.printf("%-30s %8s %15s %15s%n", "Ten san pham", "So luong", "Don gia", "Thanh tien");
-			for (CartProduct cartProduct : order1.get(i).getCartProducts()) {
+			for (CartProduct cartProduct : order.get(i).getCartProducts()) {
 				cartProduct.display();
 				totalCartPrice += cartProduct.totalPrice();
 			}
@@ -130,8 +132,8 @@ public class OrderManagement {
 			double total = 0; 
 			boolean found = false; 
 			for (int i = 0; i < CartManagement.getOrder().size(); i++) {
-				for (CartProduct cartProduct : order1.get(i).getCartProducts()) {
-					if (order1.get(i).getCode().trim().equals(code.trim())) { 
+				for (CartProduct cartProduct : order.get(i).getCartProducts()) {
+					if (order.get(i).getCode().trim().equals(code.trim())) { 
 						cartProduct.display();
 						total += cartProduct.totalPrice(); 
 						found = true; 
@@ -149,5 +151,39 @@ public class OrderManagement {
 		
 		
 	}
-	// ý 5 chưa làm được 
+	public static void totalByPro() { 
+		Map<Integer,List> map = new HashMap<>();
+		// 0 : quantity
+		// 1 : totalPrice 
+		if (order == null) { 
+			System.out.println("Chua co san pham nao duoc ban ra");
+		}
+		else { 
+			
+		for (int i = 0; i < order.size(); i++) { 
+			for (CartProduct cartProduct: order.get(i).getCartProducts()) {
+				if (map.containsKey(cartProduct.getId())) {
+					List<Object> values = new ArrayList<Object>(); 
+
+					values.add((int)map.get(cartProduct.getId()).get(0) + cartProduct.getQuantity() ); 
+					values.add((double)map.get(cartProduct.getId()).get(1) + cartProduct.totalPrice() ); 
+					map.put(cartProduct.getId(), values);
+				}
+				else {
+					List<Object> values = new ArrayList<Object>(); 
+
+					values.add( cartProduct.getQuantity() ); 
+					values.add( cartProduct.totalPrice() );
+					map.put(cartProduct.getId(), values);
+				}
+			}
+		}
+		}
+		System.out.printf("%-30s %8s %15s%n", "Ten san pham", "So luong", "Thanh tien");
+		for (Map.Entry<Integer,List> entry: map.entrySet()) { 
+			  System.out.printf("%-30s %8d %15.2f %n",
+	                    ProductManagement.getProductById(entry.getKey()).getName(), (int)entry.getValue().get(0), (double)entry.getValue().get(1));
+		}
+	}
+	
 }

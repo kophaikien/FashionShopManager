@@ -5,7 +5,7 @@ import java.awt.im.InputContext;
 import java.util.Scanner;
 
 import vn.devpro.exception.InputException;
-import vn.devprp.backend.category.CategoryManagement;
+import vn.devpro.store.backend.category.*;
 
 
 public class Product {
